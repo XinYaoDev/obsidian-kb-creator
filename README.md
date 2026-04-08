@@ -34,23 +34,23 @@
 
 ```
 your-knowledge-base/
-├── CLAUDE.md                    # 知识库的"大脑"——告诉 AI 如何工作
-├── raw/                         # 📥 你的原始材料（只读，人类策展）
-├── research/                    # 🔬 AI 的补充研究（AI 策展）
-├── wiki/                        # 📖 编译产物——结构化知识库
-│   ├── INDEX.md                 #    知识库索引
-│   ├── _compile-log.md          #    编译日志（追踪编译状态）
-│   ├── _changelog.md            #    变更日志（所有操作历史）
-│   └── {分类文件夹}/             #    按主题自动分类
-│       └── {文章}.md
-├── outputs/                     # 📝 写作产出和分析报告
-├── .claude/commands/            # ⚡ 五个一键命令
-│   ├── compile.md
-│   ├── lint.md
-│   ├── write.md
-│   ├── research.md
-│   └── health-check.md
-├── lock-raw.bat / lock-raw.sh   # 🔒 锁定 raw/ 防止 AI 误改
+├── CLAUDE.md # 知识库的"大脑"——告诉 AI 如何工作
+├── raw/ # 📥 你的原始材料（只读，人类策展）
+├── research/ # 🔬 AI 的补充研究（AI 策展）
+├── wiki/ # 📖 编译产物——结构化知识库
+│ ├── INDEX.md # 知识库索引
+│ ├── _compile-log.md # 编译日志（追踪编译状态）
+│ ├── _changelog.md # 变更日志（所有操作历史）
+│ └── {分类文件夹}/ # 按主题自动分类
+│ └── {文章}.md
+├── outputs/ # 📝 写作产出和分析报告
+├── .claude/commands/ # ⚡ 五个一键命令
+│ ├── compile.md
+│ ├── lint.md
+│ ├── write.md
+│ ├── research.md
+│ └── health-check.md
+├── lock-raw.bat / lock-raw.sh # 🔒 锁定 raw/ 防止 AI 误改
 └── unlock-raw.bat / unlock-raw.sh
 ```
 
@@ -83,16 +83,16 @@ your-knowledge-base/
 
 ```
 你丢材料 → raw/
-                ↘
-                  /compile → wiki（知识库）
-                ↗                ↓
-AI 搜索补充 → research/      /write 写文章
-                ↑                ↓
-           /research        新洞察回流 wiki
-                ↑                ↓
-     /health-check 发现空白   wiki 更强了
-                                 ↓
-                           下次产出更好 → ...
+ ↘
+ /compile → wiki（知识库）
+ ↗ ↓
+AI 搜索补充 → research/ /write 写文章
+ ↑ ↓
+ /research 新洞察回流 wiki
+ ↑ ↓
+ /health-check 发现空白 wiki 更强了
+ ↓
+ 下次产出更好 → ...
 ```
 
 **每一次深度写作，都在给知识库施肥。** wiki 越强，写出的文章越好，文章里的新洞察又回流 wiki。这就是知识的复利。
@@ -104,8 +104,7 @@ AI 搜索补充 → research/      /write 写文章
 ### 前置条件
 
 - [Obsidian](https://obsidian.md/)（免费，用于浏览知识库）
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code)（用于运行命令）
-- 或任何兼容 Anthropic API 的模型（如 MiniMax M2.7）
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) 或任何兼容 Anthropic API 的模型（如 MiniMax M2.7）
 
 #### 推荐：安装 Claudian 插件
 
@@ -117,62 +116,76 @@ AI 搜索补充 → research/      /write 写文章
 3. Obsidian 设置 → 第三方插件 → 启用 Claudian
 4. 确保已安装 Claude Code CLI 并配置好 API（直接用 Claude 订阅或第三方兼容 API 均可）
 
-### 方式一：使用 Skill 自动生成（推荐）
+---
 
-如果你在 Claude.ai 或 Claude Code 中安装了本 Skill：
+### 安装 KB Creator
 
-1. 对 AI 说 **"帮我创建一个知识库"**
-2. 回答 2 个问题（领域 + 文件夹名）
-3. 下载生成的 zip，解压即可
+根据你的使用场景，选择以下三种方式之一：
 
-AI 会根据你的领域自动定制：
-- 知识分类体系（type）
-- 文章结构模板
-- 完整示例文章
-- 文件命名规则
-- 时效性规则
+#### 方式一：在 Claude.ai 对话中直接使用（最简单）
 
-### 方式二：手动使用模板
+不需要安装任何东西。把本仓库的 [`SKILL.md`](./SKILL.md) 和 [`references/claude-md-template.md`](./references/claude-md-template.md) 的内容复制粘贴到 [Claude.ai](https://claude.ai) 对话中，然后说 **"帮我创建一个知识库"**，Claude 会按流程引导你生成完整的 zip 包。
 
-1. Clone 本仓库
-2. 复制 `templates/` 中的命令文件到你的 vault 的 `.claude/commands/`
-3. 参考 `references/claude-md-template.md` 编写你自己的 `CLAUDE.md`
-4. 创建 `raw/`、`research/`、`wiki/`、`outputs/` 文件夹
+#### 方式二：在 Claude Code 中作为 Skill 安装
+
+将本仓库克隆到你的全局 Skills 目录，所有项目都可以调用：
+
+```bash
+git clone https://github.com/XinYaoDev/obsidian-kb-creator.git ~/.claude/skills/kb-creator
+```
+
+安装后在 Claude Code 中说 "帮我创建一个知识库" 即可触发。
+
+#### 方式三：手动复制模板到已有 vault
+
+如果你已经有一个 Obsidian vault，只需要命令文件：
+
+```bash
+# 克隆仓库
+git clone https://github.com/XinYaoDev/obsidian-kb-creator.git
+
+# 复制五个命令到你的 vault
+mkdir -p your-vault/.claude/commands
+cp obsidian-kb-creator/templates/compile.md your-vault/.claude/commands/
+cp obsidian-kb-creator/templates/lint.md your-vault/.claude/commands/
+cp obsidian-kb-creator/templates/write.md your-vault/.claude/commands/
+cp obsidian-kb-creator/templates/research.md your-vault/.claude/commands/
+cp obsidian-kb-creator/templates/health-check.md your-vault/.claude/commands/
+
+# 复制锁定脚本
+cp obsidian-kb-creator/templates/lock-raw.* your-vault/
+cp obsidian-kb-creator/templates/unlock-raw.* your-vault/
+
+# 创建文件夹
+mkdir -p your-vault/{raw,research,wiki,outputs}
+```
+
+然后参考 [`references/claude-md-template.md`](./references/claude-md-template.md) 编写你自己的 `CLAUDE.md`，或者让 AI 帮你写。
+
+---
 
 ### 开始使用
 
-#### 通过 Claudian 在 Obsidian 内操作（推荐）
+知识库准备好后，四步开始：
 
-安装 Claudian 后，所有操作都在 Obsidian 侧边栏完成，无需打开终端：
+**① 丢材料**：把文章、笔记、想法丢进 `raw/`
 
-1. 点击侧边栏的 Claudian 图标打开对话面板
-2. 输入 `/compile` 开始编译
-3. 用 `@[[文件名]]` 可以引用 vault 中的文件作为上下文
-4. 所有五个斜杠命令均可直接使用
+**② 锁定 raw/**：Windows 双击 `lock-raw.bat`，Mac 运行 `chmod +x lock-raw.sh && ./lock-raw.sh`
 
-#### 通过终端操作
+**③ 编译**：在 Claudian 侧边栏或终端中输入 `/compile`
+
+**④ 使用**：`/write` 写文章、`/research` 补充研究、`/lint` 检查格式、`/health-check` 定期体检
 
 ```bash
-# 进入你的知识库目录
-cd path/to/your-knowledge-base
-
-# 启动 Claude Code
+# 如果使用终端方式
+cd path/to/your-vault
 claude
 
-# 丢一些材料到 raw/ 后，开始编译
-> /compile
-
-# 检查格式
-> /lint
-
-# 基于 wiki 写文章
+> /compile # 编译新材料
+> /lint # 检查格式
 > /write 帮我写一篇关于 xxx 的深度分析
-
-# AI 主动补充研究
 > /research xxx 的最新进展
-
-# 定期体检
-> /health-check
+> /health-check # 定期体检
 ```
 
 ---
@@ -230,17 +243,17 @@ wiki 文章的 `sources` 字段清楚标注每条信息来自 `raw/`（你的材
 
 ```
 kb-creator/
-├── SKILL.md                           # Skill 主文件（定义交互流程）
+├── SKILL.md # Skill 主文件（定义交互流程）
 ├── references/
-│   └── claude-md-template.md          # CLAUDE.md 生成模板
+│ └── claude-md-template.md # CLAUDE.md 生成模板
 └── templates/
-    ├── compile.md                     # /compile 命令
-    ├── lint.md                        # /lint 命令
-    ├── write.md                       # /write 命令
-    ├── research.md                    # /research 命令
-    ├── health-check.md                # /health-check 命令
-    ├── lock-raw.bat / lock-raw.sh     # 锁定 raw/
-    └── unlock-raw.bat / unlock-raw.sh # 解锁 raw/
+ ├── compile.md # /compile 命令
+ ├── lint.md # /lint 命令
+ ├── write.md # /write 命令
+ ├── research.md # /research 命令
+ ├── health-check.md # /health-check 命令
+ ├── lock-raw.bat / lock-raw.sh # 锁定 raw/
+ └── unlock-raw.bat / unlock-raw.sh # 解锁 raw/
 ```
 
 ---
